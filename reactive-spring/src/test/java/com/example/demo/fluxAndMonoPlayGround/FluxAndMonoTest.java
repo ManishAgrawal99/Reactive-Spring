@@ -3,6 +3,7 @@ package com.example.demo.fluxAndMonoPlayGround;
 import org.junit.Test;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 public class FluxAndMonoTest {
@@ -49,6 +50,33 @@ public class FluxAndMonoTest {
 //					.expectErrorMessage("Exception Occured")
 					.verify();
 //					.verifyComplete();
+		
+	}
+	
+	
+	@Test
+	public void fluxTestElements_Count() {
+		Flux<String> stringFlux = Flux.just("Spring" ,"Spring Boot", "Reactive Spring")
+									.concatWith(Flux.error(new RuntimeException("Exception Occured")))
+									.log();
+		
+		StepVerifier.create(stringFlux)
+					.expectNextCount(3)
+					.expectErrorMessage("Exception Occured")
+					.verify();
+		
+	}
+	
+	
+	@Test
+	public void monoTest() {
+		
+		Mono<String> stringMono = Mono.just("spring");
+		
+		StepVerifier.create(stringMono.log())
+					.expectNext("spring")
+					.verifyComplete();
+		
 		
 	}
 }
