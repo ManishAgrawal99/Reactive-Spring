@@ -10,10 +10,12 @@ public class FluxAndMonoTest {
 	public void fluxTest() {
 		
 		Flux<String> stringFlux = Flux.just("Spring" ,"Spring Boot", "Reactive Spring")
-									  .concatWith(Flux.error(new RuntimeException("Exception Occured")));
+									  //.concatWith(Flux.error(new RuntimeException("Exception Occured")))
+									  .concatWith(Flux.just("After Error"));
 		
 		stringFlux.subscribe(System.out::println,
-				(e) -> System.err.println(e));
+				(e) -> System.err.println(e),
+				() -> System.out.println("Completed"));
 		
 		
 		
